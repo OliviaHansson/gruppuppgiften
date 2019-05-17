@@ -16,4 +16,4 @@ const pokemons = [
   { name: 'Rattata', color: 'Purple', age: 1 },
 ];
 
-export default [cats, dogs, pokemons];
+export default {cats, dogs, pokemons};

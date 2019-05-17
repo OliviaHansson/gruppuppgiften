@@ -12,11 +12,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Setup the database
 const db = new Database();
-db.addCollection('cats', mockData);
+db.addCollection('cats', mockData.cats);
 
-db.addCollection('dogs', mockData);
+db.addCollection('dogs', mockData.dogs);
 
-db.addCollection('pokemons', mockData);
+db.addCollection('pokemons', mockData.pokemons);
 
 class Creature {
   constructor(type, collection, app) {
@@ -45,15 +45,25 @@ class Creature {
       });
     });
   }
-}
 
+  getAll() {
+    const path = `/${this.type}s`;
+    console.log('getPost', path);
+  
+    this.app.get(path, (req, res) => res.status(200).send({
+      success: true,
+      data: db[`${this.type}s`].all(),
+    }));
+    
+  }
+}
 const cat = new Creature('cat', db.cats, app);
 cat.registerPost();
+cat.getAll();
 
-app.get('/cats', (req, res) => res.status(200).send({
-  success: true,
-  data: db.cats.all(),
-}));
+const dog = new Creature('dog', db.dogs, app);
+dog.getAll();
+
 
 app.get('/cat/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
