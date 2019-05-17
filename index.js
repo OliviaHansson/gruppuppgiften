@@ -18,23 +18,37 @@ db.addCollection('dogs', mockData);
 
 db.addCollection('pokemons', mockData);
 
-// Setup the routes
-app.post('/cat', (req, res) => {
-  if (!req.body.name) {
-    console.log(req.body);
-    return res.status(400).send({
-      success: false,
-      message: 'Name is required for cat',
+class Creature {
+  constructor(type, collection, app) {
+    this.type = type;
+    this.collection = collection;
+    this.app = app;
+  }
+
+  registerPost() {
+    const path = `/${this.type}`;
+    console.log('regPost', path);
+    this.app.post(path, (req, res) => {
+      if (!req.body.name) {
+        console.log(req.body);
+        return res.status(400).send({
+          success: false,
+          message: `Name is required for ${this.type}`,
+        });
+      }
+      const newCreature = req.body;
+      const newId = this.collection.push(newCreature);
+      return res.status(201).send({
+        success: true,
+        message: `${this.type} added successfully`,
+        id: newId,
+      });
     });
   }
-  const newCat = req.body;
-  const newId = db.cats.push(newCat);
-  return res.status(201).send({
-    success: true,
-    message: 'Cat added successfully',
-    id: newId,
-  });
-});
+}
+
+const cat = new Creature('cat', db.cats, app);
+cat.registerPost();
 
 app.get('/cats', (req, res) => res.status(200).send({
   success: true,
