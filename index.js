@@ -34,12 +34,10 @@ app.post('/cat', (req, res) => {
   });
 });
 
-app.get('/cats', (req, res) => {
-  return res.status(200).send({
-    success: true,
-    data: db.cats.all(),
-  });
-});
+app.get('/cats', (req, res) => res.status(200).send({
+  success: true,
+  data: db.cats.all(),
+}));
 
 app.get('/cat/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
