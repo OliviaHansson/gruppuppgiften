@@ -1,6 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import Database from './lib/db';
+// import { createSecureContext } from 'tls';
+import mockData from './mockData';
 
 // Setup the server
 const PORT = 3000;
@@ -10,11 +12,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Setup the database
 const db = new Database();
-db.addCollection('cats', [
-  { name: 'Fluffy', color: 'White', age: 3 },
-  { name: 'Aslan', color: 'Gold', age: 11 },
-  { name: 'Kitty', color: 'Grey', age: 1 },
-]);
+db.addCollection('cats', mockData);
+
+db.addCollection('dogs', mockData);
+
+db.addCollection('pokemons', mockData);
 
 // Setup the routes
 app.post('/cat', (req, res) => {
