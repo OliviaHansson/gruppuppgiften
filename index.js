@@ -49,22 +49,20 @@ class Creature {
   getAll() {
     const path = `/${this.type}s`;
     console.log('getPost', path);
-  
+
     this.app.get(path, (req, res) => res.status(200).send({
       success: true,
       data: db[`${this.type}s`].all(),
     }));
-    
   }
 }
+
 const cat = new Creature('cat', db.cats, app);
 cat.registerPost();
 cat.getAll();
 
 const dog = new Creature('dog', db.dogs, app);
 dog.getAll();
-
-
 app.get('/cat/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
   const cat = db.cats.find({ id });
@@ -94,7 +92,6 @@ app.get('/catSearch/:key/:value', (req, res) => {
     message: 'Cat not found',
   });
 });
-
 
 // Start server
 app.listen(PORT, () => {
