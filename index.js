@@ -72,8 +72,8 @@ class Creature {
         success: false,
         message: `${this.type} could not be found`,
 
-      })
-    })
+      });
+    });
   }
 
   getCreatureByTextValue() {
