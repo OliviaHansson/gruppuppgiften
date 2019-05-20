@@ -71,35 +71,22 @@ class Creature {
       return res.status(404).send({
         success: false,
         message: `${this.type} could not be found`,
-      });
-    });
-  }
-}
 
-const cat = new Creature('cat', db.cats, app);
-cat.registerPost();
-cat.getAll();
-cat.getId();
-const dog = new Creature('dog', db.dogs, app);
-dog.getAll();
-dog.getId();
-
-app.get('/catSearch/:key/:value', (req, res) => {
-  const { key, value } = req.params;
-  const cat = db.cats.find({ [key]: value });
-  if (cat) {
-    return res.status(200).send({
-      success: true,
-      data: cat,
-    });
+      })
+    })
   }
-  return res.status(404).send({
-    success: false,
-    message: 'Cat not found',
+
+  const cat = new Creature('cat', db.cats, app);
+  cat.registerPost();
+  cat.getAll();
+  cat.getId();
+  const dog = new Creature('dog', db.dogs, app);
+  dog.getAll();
+  dog.getId();
+
+
+
+  // Start server
+  app.listen(PORT, () => {
+    console.log(`The server is listening on port ${PORT}`);
   });
-});
-
-// Start server
-app.listen(PORT, () => {
-  console.log(`The server is listening on port ${PORT}`);
-});
