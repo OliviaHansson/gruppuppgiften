@@ -76,17 +76,46 @@ class Creature {
     })
   }
 
-  const cat = new Creature('cat', db.cats, app);
-  cat.registerPost();
-  cat.getAll();
-  cat.getId();
-  const dog = new Creature('dog', db.dogs, app);
-  dog.getAll();
-  dog.getId();
+  getCreatureByTextValue() {
+    const path = `/${this.type}s/:key/:value`;
+
+    this.app.get(path, (req, res) => {
+      const { key, value } = req.params;
+      const result = db[`${this.type}s`].find({ [key]: value });
+      if (result) {
+        return res.status(200).send({
+          success: true,
+          data: result,
+        });
+      }
+      return res.status(404).send({
+        success: false,
+        message: `${this.type}s not found`,
+      });
+    });
+  }
+}
 
 
+const cat = new Creature('cat', db.cats, app);
+cat.registerPost();
+cat.getAll();
+cat.getId();
+cat.getCreatureByTextValue();
 
-  // Start server
-  app.listen(PORT, () => {
-    console.log(`The server is listening on port ${PORT}`);
-  });
+const dog = new Creature('dog', db.dogs, app);
+dog.registerPost();
+dog.getAll();
+dog.getId();
+dog.getCreatureByTextValue();
+
+const pokemon = new Creature('pokemon', db.pokemons, app);
+pokemon.registerPost();
+pokemon.getAll();
+pokemon.getId();
+pokemon.getCreatureByTextValue();
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`The server is listening on port ${PORT}`);
+});
