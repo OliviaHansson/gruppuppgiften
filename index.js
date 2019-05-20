@@ -1,8 +1,8 @@
-import express from "express";
-import bodyParser from "body-parser";
-import Database from "./lib/db";
+import express from 'express';
+import bodyParser from 'body-parser';
+import Database from './lib/db';
 // import { createSecureContext } from 'tls';
-import mockData from "./mockData";
+import mockData from './mockData';
 
 // Setup the server
 const PORT = 3000;
@@ -12,11 +12,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Setup the database
 const db = new Database();
-db.addCollection("cats", mockData.cats);
+db.addCollection('cats', mockData.cats);
 
-db.addCollection("dogs", mockData.dogs);
+db.addCollection('dogs', mockData.dogs);
 
-db.addCollection("pokemons", mockData.pokemons);
+db.addCollection('pokemons', mockData.pokemons);
 
 class Creature {
   constructor(type, collection, app) {
@@ -27,13 +27,13 @@ class Creature {
 
   registerPost() {
     const path = `/${this.type}`;
-    console.log("regPost", path);
+    console.log('regPost', path);
     this.app.post(path, (req, res) => {
       if (!req.body.name) {
         console.log(req.body);
         return res.status(400).send({
           success: false,
-          message: `Name is required for ${this.type}`
+          message: `Name is required for ${this.type}`,
         });
       }
       const newCreature = req.body;
@@ -41,21 +41,19 @@ class Creature {
       return res.status(201).send({
         success: true,
         message: `${this.type} added successfully`,
-        id: newId
+        id: newId,
       });
     });
   }
 
   getAll() {
     const path = `/${this.type}s`;
-    console.log("getPost", path);
+    console.log('getPost', path);
 
-    this.app.get(path, (req, res) =>
-      res.status(200).send({
-        success: true,
-        data: db[`${this.type}s`].all()
-      })
-    );
+    this.app.get(path, (req, res) => res.status(200).send({
+      success: true,
+      data: db[`${this.type}s`].all()
+    }));
   }
 
   getId() {
@@ -67,37 +65,37 @@ class Creature {
       if (result) {
         return res.status(200).send({
           success: true,
-          data: result
+          data: result,
         });
       }
       return res.status(404).send({
         success: false,
-        message: `${this.type} could not be found`
+        message: `${this.type} could not be found`,
       });
     });
   }
 }
 
-const cat = new Creature("cat", db.cats, app);
+const cat = new Creature('cat', db.cats, app);
 cat.registerPost();
 cat.getAll();
 cat.getId();
-const dog = new Creature("dog", db.dogs, app);
+const dog = new Creature('dog', db.dogs, app);
 dog.getAll();
 dog.getId();
 
-app.get("/catSearch/:key/:value", (req, res) => {
+app.get('/catSearch/:key/:value', (req, res) => {
   const { key, value } = req.params;
   const cat = db.cats.find({ [key]: value });
   if (cat) {
     return res.status(200).send({
       success: true,
-      data: cat
+      data: cat,
     });
   }
   return res.status(404).send({
     success: false,
-    message: "Cat not found"
+    message: 'Cat not found',
   });
 });
 
