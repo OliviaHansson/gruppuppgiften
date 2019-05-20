@@ -83,20 +83,6 @@ cat.getCreatureByTextValue();
 
 const dog = new Creature('dog', db.dogs, app);
 dog.getAll();
-app.get('/cat/:id', (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  const cat = db.cats.find({ id });
-  if (cat) {
-    return res.status(200).send({
-      success: true,
-      data: cat,
-    });
-  }
-  return res.status(404).send({
-    success: false,
-    message: "Cat not found"
-  });
-});
 
 // Start server
 app.listen(PORT, () => {
