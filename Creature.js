@@ -1,4 +1,4 @@
-import DBservice from './DBservice';
+import db from './server';
 
 class Creature {
   constructor(type, collection, app) {
@@ -34,7 +34,7 @@ class Creature {
 
     this.app.get(path, (req, res) => res.status(200).send({
       success: true,
-      data: db[`${this.type}s`].all()
+      data: db[`${this.type}s`].all(),
     }));
   }
 

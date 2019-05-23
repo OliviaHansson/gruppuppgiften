@@ -1,6 +1,6 @@
 import Creature from './Creature';
-import DBservise from './DBservice';
-
+import db from './server';
+import app from './database';
 
 const cat = new Creature('cat', db.cats, app);
 cat.registerPost();
