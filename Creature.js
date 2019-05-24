@@ -1,4 +1,4 @@
-import db from './server';
+import db from './database';
 
 class Creature {
   constructor(type, collection, app) {
